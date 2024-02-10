@@ -68,9 +68,9 @@ def remove_emoji(string):
     return emoji_pattern.sub(r'', string)
 
 def get_cleaned_tweets(hashtag: str):
-    max_tweets = random.randrange(30,90)
+    max_tweets = random.randrange(50,90)
     tweet_list = []
-    resp = requests.get(url=f'https://api.pullpush.io/reddit/search/comment/?q={hashtag}&subreddit=opensea&size={max_tweets}').json()
+    resp = requests.get(url=f'https://api.pullpush.io/reddit/search/comment/?q={hashtag}&subreddit=nft&size={max_tweets}').json()
     for i, tweet in enumerate(resp['data']):
         if i>max_tweets:
             break
@@ -90,7 +90,6 @@ async def get_sentiment(nft_name: str):
     for val in predictions:
         if val==1:
             nPos +=1
-    print(predictions)
     posPer = nPos/len(cleaned_tweets)
     result = {'positive': posPer}
     return result
