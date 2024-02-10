@@ -11,6 +11,11 @@ import Proparties_modal from "../../components/modal/proparties_modal";
 import { useDispatch } from "react-redux";
 import { showPropatiesModal } from "../../redux/counterSlice";
 import Meta from "../../components/Meta";
+import axios from 'axios';
+const FormData = require('form-data');
+// const fs = require('fs');
+
+const JWT = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiI1MGRmZWZjMy1kMGM5LTRlNzktYTA1Yi1jYmM5ZGMyZjY1MDgiLCJlbWFpbCI6Im1haWx0by51bm1hbmlAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6Ijc3ZTI5YjQxYTZmZWYwZTY4MmY3Iiwic2NvcGVkS2V5U2VjcmV0IjoiM2U5NzVkYzc5NGZiMjBmMDk4NjAwMjA2ZDlkMWQwNTQ2MGM4MjM1YjgzMzRlZDAwM2FjNTgzNmFhNTBkN2U3MSIsImlhdCI6MTcwNzU3NTI1N30.w0hsbcy25GBwLJkwFMJKIrrhYfwRaveIPXcK0kdyHBw'
 
 const Create = () => {
   const fileTypes = [
@@ -26,12 +31,87 @@ const Create = () => {
     "GLB",
     "GLTF",
   ];
-  const [file, setFile] = useState("");
+  const imageFileTypes = ["JPG","PNG"];
+  const [file, setFile] = useState(null);
+  const [titleImage,setTitleImage] = useState(null);
 
   const dispatch = useDispatch();
 
-  const handleChange = (file) => {
-    setFile(file.name);
+  const pinFileToIPFSMain = async () => {
+    console.log("Uploading Main File");
+		const formData = new FormData();
+		formData.append('file', file)
+
+    const pinataMetadata = JSON.stringify({
+		  name: file.name,
+		})
+		formData.append('pinataMetadata',pinataMetadata);
+		
+		const pinataOptions = JSON.stringify({
+		  cidVersion: 0,
+		})
+		formData.append('pinataOptions', pinataOptions);
+	
+		try{
+		  const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
+			maxBodyLength: "Infinity",
+			headers: {
+			  'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
+			  'Authorization': `Bearer ${JWT}`
+			}
+		  });
+		  console.log("hash:",res.data.IpfsHash);
+		} catch (error) {
+		  console.log(error);
+		}
+
+
+
+
+    console.log("Uploading Title Description Image");
+		const formData2 = new FormData();
+		formData2.append('file', titleImage)
+		
+    const pinataMetadata2 = JSON.stringify({
+		  name: titleImage.name,
+		})
+		formData2.append('pinataMetadata',pinataMetadata2);
+		
+		const pinataOptions2 = JSON.stringify({
+		  cidVersion: 0,
+		})
+		formData2.append('pinataOptions', pinataOptions2);
+	
+		try{
+		  const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData2, {
+			maxBodyLength: "Infinity",
+			headers: {
+			  'Content-Type': `multipart/form-data; boundary=${formData2._boundary}`,
+			  'Authorization': `Bearer ${JWT}`
+			}
+		  });
+		  console.log("hash:",res.data.IpfsHash);
+		} catch (error) {
+		  console.log(error);
+		}
+
+
+
+
+
+
+	}
+
+  // const pinFileToIPFSTitleImage = async () => {
+    
+	// }
+
+  const handleChange = async(file) => {
+    await setFile(file);
+  };
+
+  const handleChangeImage = async (titleImage) => {
+    await setTitleImage(titleImage);
   };
 
   const popupItemData = [
@@ -81,7 +161,7 @@ const Create = () => {
 
               {file ? (
                 <p className="dark:text-jacarta-300 text-2xs mb-3">
-                  successfully uploaded : {file}
+                  successfully uploaded : {file.name}
                 </p>
               ) : (
                 <p className="dark:text-jacarta-300 text-2xs mb-3">
@@ -111,6 +191,53 @@ const Create = () => {
                     handleChange={handleChange}
                     name="file"
                     types={fileTypes}
+                    classes="file-drag"
+                    maxSize={100}
+                    minSize={0}
+                  />
+                </div>
+              </div>
+            </div>
+
+
+            <div className="mb-6">
+              <label className="font-display text-jacarta-700 mb-2 block dark:text-white">
+                Image File
+                <span className="text-red">*</span>
+              </label>
+
+              {titleImage ? (
+                <p className="dark:text-jacarta-300 text-2xs mb-3">
+                  successfully uploaded : {titleImage.name}
+                </p>
+              ) : (
+                <p className="dark:text-jacarta-300 text-2xs mb-3">
+                  Drag or choose an image for description
+                </p>
+              )}
+
+              <div className="dark:bg-jacarta-700 dark:border-jacarta-600 border-jacarta-100 group relative flex max-w-md flex-col items-center justify-center rounded-lg border-2 border-dashed bg-white py-20 px-5 text-center">
+                <div className="relative z-10 cursor-pointer">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    className="fill-jacarta-500 mb-4 inline-block dark:fill-white"
+                  >
+                    <path fill="none" d="M0 0h24v24H0z" />
+                    <path d="M16 13l6.964 4.062-2.973.85 2.125 3.681-1.732 1-2.125-3.68-2.223 2.15L16 13zm-2-7h2v2h5a1 1 0 0 1 1 1v4h-2v-3H10v10h4v2H9a1 1 0 0 1-1-1v-5H6v-2h2V9a1 1 0 0 1 1-1h5V6zM4 14v2H2v-2h2zm0-4v2H2v-2h2zm0-4v2H2V6h2zm0-4v2H2V2h2zm4 0v2H6V2h2zm4 0v2h-2V2h2zm4 0v2h-2V2h2z" />
+                  </svg>
+                  <p className="dark:text-jacarta-300 mx-auto max-w-xs text-xs">
+                    JPG or PNG Max
+                    size: 100 MB
+                  </p>
+                </div>
+                <div className="dark:bg-jacarta-600 bg-jacarta-50 absolute inset-4 cursor-pointer rounded opacity-0 group-hover:opacity-100 ">
+                  <FileUploader
+                    handleChange={handleChangeImage}
+                    name="titleImage"
+                    types={imageFileTypes}
                     classes="file-drag"
                     maxSize={100}
                     minSize={0}
@@ -179,7 +306,7 @@ const Create = () => {
             </div>
 
             {/* <!-- Collection --> */}
-            <div className="relative">
+            {/* <div className="relative">
               <div>
                 <label className="font-display text-jacarta-700 mb-2 block dark:text-white">
                   Collection
@@ -213,17 +340,17 @@ const Create = () => {
                 </div>
               </div>
 
-              {/* dropdown */}
+              
               <div className="dropdown my-1 cursor-pointer">
                 <Collection_dropdown2
                   data={collectionDropdown2_data}
                   collection={true}
                 />
               </div>
-            </div>
+            </div> */}
 
             {/* <!-- Properties --> */}
-            {popupItemData.map(({ id, name, text, icon }) => {
+            {/* {popupItemData.map(({ id, name, text, icon }) => {
               return (
                 <div
                   key={id}
@@ -260,14 +387,14 @@ const Create = () => {
                   </div>
                 </div>
               );
-            })}
+            })} */}
 
-            <Proparties_modal />
+            {/* <Proparties_modal /> */}
 
             {/* <!-- Properties --> */}
 
             {/* <!-- Unlockable Content --> */}
-            <div className="dark:border-jacarta-600 border-jacarta-100 relative border-b py-6">
+            {/* <div className="dark:border-jacarta-600 border-jacarta-100 relative border-b py-6">
               <div className="flex items-center justify-between">
                 <div className="flex">
                   <svg
@@ -298,10 +425,10 @@ const Create = () => {
                   className="checked:bg-accent checked:focus:bg-accent checked:hover:bg-accent after:bg-jacarta-400 bg-jacarta-100 relative h-6 w-[2.625rem] cursor-pointer appearance-none rounded-full border-none after:absolute after:top-[0.1875rem] after:left-[0.1875rem] after:h-[1.125rem] after:w-[1.125rem] after:rounded-full after:transition-all checked:bg-none checked:after:left-[1.3125rem] checked:after:bg-white focus:ring-transparent focus:ring-offset-0"
                 />
               </div>
-            </div>
+            </div> */}
 
             {/* <!-- Explicit & Sensitive Content --> */}
-            <div className="dark:border-jacarta-600 border-jacarta-100 relative mb-6 border-b py-6">
+            {/* <div className="dark:border-jacarta-600 border-jacarta-100 relative mb-6 border-b py-6">
               <div className="flex items-center justify-between">
                 <div className="flex">
                   <svg
@@ -355,7 +482,7 @@ const Create = () => {
                   className="checked:bg-accent checked:focus:bg-accent checked:hover:bg-accent after:bg-jacarta-400 bg-jacarta-100 relative h-6 w-[2.625rem] cursor-pointer appearance-none rounded-full border-none after:absolute after:top-[0.1875rem] after:left-[0.1875rem] after:h-[1.125rem] after:w-[1.125rem] after:rounded-full after:transition-all checked:bg-none checked:after:left-[1.3125rem] checked:after:bg-white focus:ring-transparent focus:ring-offset-0"
                 />
               </div>
-            </div>
+            </div> */}
 
             {/* <!-- Supply --> */}
             <div className="mb-6">
@@ -419,7 +546,7 @@ const Create = () => {
             </div>
 
             {/* <!-- Freeze metadata --> */}
-            <div className="mb-6">
+            {/* <div className="mb-6">
               <div className="mb-2 flex items-center space-x-2">
                 <label
                   htmlFor="item-freeze-metadata"
@@ -466,11 +593,11 @@ const Create = () => {
                 className="dark:bg-jacarta-700 bg-jacarta-50 border-jacarta-100 dark:border-jacarta-600 dark:placeholder:text-jacarta-300 w-full rounded-lg py-3 px-3 dark:text-white"
                 placeholder="To freeze your metadata, you must create your item first."
               />
-            </div>
+            </div> */}
 
             {/* <!-- Submit --> */}
             <button
-              disabled
+            onClick={()=>{pinFileToIPFSMain();}}
               className="bg-accent-lighter cursor-default rounded-full py-3 px-8 text-center font-semibold text-white transition-all"
             >
               Create
