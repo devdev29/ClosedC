@@ -16,39 +16,28 @@ import { bidsModalShow } from '../../redux/counterSlice';
 const Item = () => {
 	const dispatch = useDispatch();
 	const router = useRouter();
-	const pid = router.query.item;
-
+	const queryData = router.query;
+	console.log(queryData.cid_img)
+//https://ipfs.io/ipfs/QmXrmp2F8HzVfdvckYyKAEzksNV7pRN29XLEWFoTv1PwaT
 	const [imageModal, setImageModal] = useState(false);
+	const image = 'https://ipfs.io/ipfs/' + queryData.cid_img;
+	const title = queryData.title;
+	const id = queryData.id;
+	// const price = 0.08;
+	const likes = queryData.likes;
+	const text = queryData.desc;
+	// const creatorImage = queryData.cid_img;
+	// const ownerImage = queryData.cid_img;
+	const creatorname = queryData.owner;
+	const ownerName = queryData.owner;
+	const price = 0.08 ;
+	const auction_timer = 1000000000;
 
 	return (
 		<>
-			<Meta title={`${pid} || Xhibiter | NFT Marketplace Next.js Template`} />
+			<Meta title={`$ClosedC | NFT Marketplace`} />
 			{/*  <!-- Item --> */}
-			<section className="relative lg:mt-24 lg:pt-24 lg:pb-24 mt-24 pt-12 pb-24">
-				<picture className="pointer-events-none absolute inset-0 -z-10 dark:hidden">
-					<img src="/images/gradient_light.jpg" alt="gradient" className="h-full" />
-				</picture>
-				<div className="container">
-					{/* <!-- Item --> */}
-					{items_data
-						.filter((item) => item.id === pid)
-						.map((item) => {
-							const {
-								image,
-								title,
-								id,
-								likes,
-								text,
-								creatorImage,
-								ownerImage,
-								creatorname,
-								ownerName,
-								price,
-								auction_timer,
-							} = item;
-
-							return (
-								<div className="md:flex md:flex-wrap" key={id}>
+			<div className="md:flex md:flex-wrap mt-12" key={id}>
 									{/* <!-- Image --> */}
 									<figure className="mb-8 md:w-2/5 md:flex-shrink-0 md:flex-grow-0 md:basis-auto lg:w-1/2 w-full">
 										<button className=" w-full" onClick={() => setImageModal(true)}>
@@ -142,8 +131,8 @@ const Item = () => {
 										<p className="dark:text-jacarta-300 mb-10">{text}</p>
 
 										{/* <!-- Creator / Owner --> */}
-										<div className="mb-8 flex flex-wrap">
-											<div className="mr-8 mb-4 flex">
+										{/* <div className="mb-8 flex flex-wrap"> */}
+											{/* <div className="mr-8 mb-4 flex">
 												<figure className="mr-4 shrink-0">
 													<Link href="/user/avatar_6">
 														<a className="relative block">
@@ -166,7 +155,7 @@ const Item = () => {
 														</a>
 													</Link>
 												</figure>
-												<div className="flex flex-col justify-center">
+												{/* <div className="flex flex-col justify-center">
 													<span className="text-jacarta-400 block text-sm dark:text-white">
 														Creator <strong>10% royalties</strong>
 													</span>
@@ -175,10 +164,10 @@ const Item = () => {
 															<span className="text-sm font-bold">{creatorname}</span>
 														</a>
 													</Link>
-												</div>
-											</div>
+												</div> 
+											</div> */}
 
-											<div className="mb-4 flex">
+											{/* <div className="mb-4 flex">
 												<figure className="mr-4 shrink-0">
 													<Link href="/user/avatar_6">
 														<a className="relative block">
@@ -211,8 +200,8 @@ const Item = () => {
 														</a>
 													</Link>
 												</div>
-											</div>
-										</div>
+											</div> */}
+										{/* </div> */}
 
 										{/* <!-- Bid --> */}
 										<div className="dark:bg-jacarta-700 dark:border-jacarta-600 border-jacarta-100 rounded-2lg border bg-white p-8">
@@ -284,8 +273,13 @@ const Item = () => {
 									</div>
 									{/* <!-- end details --> */}
 								</div>
-							);
-						})}
+			<section className="relative lg:mt-24 lg:pt-24 lg:pb-24 mt-24 pt-12 pb-24">
+				<picture className="pointer-events-none absolute inset-0 -z-10 dark:hidden">
+					<img src="/images/gradient_light.jpg" alt="gradient" className="h-full" />
+				</picture>
+				<div className="container">
+					{/* <!-- Item --> */}
+					
 					<ItemsTabs />
 				</div>
 			</section>
