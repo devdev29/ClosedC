@@ -1052,11 +1052,11 @@ const MblNavbar = ({ theme }) => {
 
           {/* <SolanaWallet /> */}
 
-          <Web3Provider>
+          {/* <Web3Provider>
           <ConnectKitButton/>
 
           </Web3Provider>
-       
+        */}
             
           
           
