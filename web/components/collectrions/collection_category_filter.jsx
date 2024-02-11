@@ -69,7 +69,7 @@ const Collection_category_filter = () => {
 		},
 		{
 			id: 4,
-			text: 'Domain',
+			text: 'Gaming',
 		},
 		{
 			id: 5,
