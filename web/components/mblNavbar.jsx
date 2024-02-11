@@ -9,7 +9,6 @@ import { Connection } from "@solana/web3.js";
 
 import { ConnectKitButton } from "connectkit";
 import {WalletMultiButton,WalletModalProvider,} from "@solana/wallet-adapter-react-ui";
-import { Web3Provider } from "./Web3Provider";
 import { useWallet } from "@solana/wallet-adapter-react";
 import Web3 from 'web3';
 import { Magic } from 'magic-sdk';
@@ -1051,13 +1050,10 @@ const MblNavbar = ({ theme }) => {
           {/* <!-- Wallet --> */}
 
           {/* <SolanaWallet /> */}
-
-          {/* <Web3Provider>
+          
           <ConnectKitButton/>
 
-          </Web3Provider>
-        */}
-            
+           
           
           
           {/* <button onClick={()=>{handleConnect}} style={{backgroundColor:"#8358FF",borderRadius:'100%'}}>{accounts?accounts[0]:'Connect'}</button> */}

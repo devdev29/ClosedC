@@ -49,8 +49,7 @@ const Collection_dropdown2 = ({ data, collection }) => {
 					onClick={() => handleDropdown()}
 				>
 					<span className="flex items-center">
-						<img src="/images/chains/ETH.png" alt="eth" className="mr-2 h-5 w-5 rounded-full" />
-						Ethereum
+						{activeItem?activeItem.text:"Select"}
 					</span>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +79,7 @@ const Collection_dropdown2 = ({ data, collection }) => {
 								<button
 									href="#"
 									className="dropdown-item font-display dark:hover:bg-jacarta-600 hover:bg-jacarta-50 flex w-full items-center justify-between rounded-xl px-5 py-2 text-left text-sm transition-colors dark:text-white"
-									onClick={() => setActiveItem(id)}
+									onClick={() => setActiveItem(item)}
 								>
 									<span className="flex items-center space-x-3">
 										<img src={image} className="h-8 w-8 rounded-full" loading="lazy" alt="avatar" />

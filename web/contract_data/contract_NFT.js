@@ -1,3 +1,3 @@
-const NFTContract = '0x5A9439B231aF4877579ACC84F255C2b28133eF85'
+const NFTContract = '0x77C5DA58cCa98867dc1a88073bA18ACAEe18eFF8'
 export default NFTContract
 
