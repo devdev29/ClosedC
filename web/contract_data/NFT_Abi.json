@@ -758,6 +758,29 @@
 	{
 		"inputs": [
 			{
+				"internalType": "uint256",
+				"name": "tokenAmountToSell",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "nftID",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "priceOfNFT",
+				"type": "uint256"
+			}
+		],
+		"name": "sellTokens",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "address",
 				"name": "operator",
 				"type": "address"
