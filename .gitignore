@@ -135,6 +135,7 @@ Lib
 Scripts
 Include
 *.cfg
+.env
 
 #Project specific stuff
 eda
