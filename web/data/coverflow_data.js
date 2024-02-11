@@ -1,10 +1,10 @@
 export const coverflow_data = [
   {
     img: "/images/products/item_13_lg.jpg",
-    title: "Etherium NFT Launching Lab",
+    title: "Ethereum NFT Launching Lab",
     authorImage: "/images/avatars/avatar_18_rounded.gif",
     authorName: "051_Hart",
-    id: "0Etherium NFT Launching Lab",
+    id: "0Ethereum NFT Launching Lab",
   },
   {
     img: "/images/products/item_16_lg.jpg",

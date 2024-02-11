@@ -13,7 +13,7 @@ const SingleStudy = () => {
 
 	return (
 		<div className="mt-[95px]">
-			<Meta title="Single_study || Xhibiter | NFT Marketplace Next.js Template" />
+			<Meta title="Single_study || ClosedC | NFT Marketplace " />
 			<Post url={pid} />
 			<Approach />
 			<Results />

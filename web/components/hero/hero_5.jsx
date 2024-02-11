@@ -68,13 +68,13 @@ const Hero_5 = () => {
 						</div>
 
 						{/* <!-- Hero images --> */}
-						<div className="relative col-span-6 xl:col-span-6 xl:col-start-7">
+						<div className="relative col-span-12 xl:col-span-6 xl:col-start-7">
 							<img
 								src="/images/hero/badge.png"
 								className="absolute top-0 z-10 -ml-16 animate-spin-slow md:top-[12%]"
 								alt=""
 							/>
-							<div className="md:flex md:space-x-6 xl:space-x-12">
+							{/* <div className="md:flex md:space-x-6 xl:space-x-12">
 								{hero_5_data.map((item, index) => {
 									const { id, img, title, authorImage, authorName, subItem } = item;
 									const itemLink = img
@@ -194,7 +194,7 @@ const Hero_5 = () => {
 										</div>
 									);
 								})}
-							</div>
+							</div> */}
 						</div>
 					</div>
 				</div>

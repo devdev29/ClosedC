@@ -13,7 +13,7 @@ const Hero_2 = () => {
             <Image src="/images/gradient.jpg" alt="gradient" layout="fill" />
           </figure>
         </picture>
-        <picture className="pointer-events-none absolute inset-x-0 top-0 -z-10 hidden dark:block">
+        {/* <picture className="pointer-events-none absolute inset-x-0 top-0 -z-10 hidden dark:block">
           <figure className="h-[630px] w-full">
             <Image
               src="/images/gradient_dark.jpg"
@@ -21,9 +21,9 @@ const Hero_2 = () => {
               layout="fill"
             />
           </figure>
-        </picture>
+        </picture> */}
 
-        <div className="container">
+        {/* <div className="container"> */}
           <div className="py-24 text-center">
             <h1 className="text-jacarta-700 font-display mb-6 text-5xl dark:text-white lg:text-6xl xl:text-7xl">
               Collect Digital Art.
@@ -43,7 +43,7 @@ const Hero_2 = () => {
                 </a>
               </Link>
             </div>
-          </div>
+          {/* </div> */}
 
           <div className="relative">
             {/* <!-- Slider --> */}

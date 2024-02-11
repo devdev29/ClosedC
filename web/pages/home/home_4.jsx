@@ -13,7 +13,7 @@ import CoverflowCarousel from '../../components/carousel/coverflowCarousel';
 const Home_4 = () => {
 	return (
 		<>
-			<Meta title="Home 4 || Xhibiter | NFT Marketplace Next.js Template" />
+			<Meta title="Home 4 || ClosedC | NFT Marketplace " />
 			<Hero_4 />
 			<CoverflowCarousel />
 			<Top_collection />

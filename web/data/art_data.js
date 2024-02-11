@@ -10,7 +10,7 @@ const ArtData = [
 		id: 1,
 		bigImage: '/images/products/item_13_lg.jpg',
 		userImage: '/images/avatars/avatar_18_rounded.gif',
-		name: 'Etherium NFT Launching Lab',
+		name: 'Ethereum NFT Launching Lab',
 		title: '051_Hart',
 	},
 	{

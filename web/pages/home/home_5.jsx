@@ -10,14 +10,14 @@ import Download from "../../components/blog/download";
 const Home_5 = () => {
   return (
     <>
-      <Meta title="Home 5 || Xhibiter | NFT Marketplace Next.js Template" />
+      <Meta title="Home 5 || ClosedC | NFT Marketplace " />
       <Hero_5 />
-      <Process />
-      <Feature_collections />
-      <Collection_category bgWhite={true} />
+      {/* <Process /> */}
+      {/* <Feature_collections /> */}
+      {/* <Collection_category bgWhite={true} /> */}
       <div>
         {/* <!-- Trending Categories --> */}
-        <section className="py-24">
+        {/* <section className="py-24">
           <div className="container">
             <HeadLine
               image="https://cdn.jsdelivr.net/npm/emoji-datasource-apple@7.0.2/img/apple/64/26a1.png"
@@ -26,10 +26,10 @@ const Home_5 = () => {
             />
             <FilterCategoryItem />
           </div>
-        </section>
+        </section> */}
         {/* <!-- end trending categories --> */}
       </div>
-      <Download />
+      {/* <Download /> */}
     </>
   );
 };
