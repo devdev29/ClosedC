@@ -14,6 +14,8 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 require("@solana/wallet-adapter-react-ui/styles.css");
 import { MagicLink } from "@thirdweb-dev/wallets";
 import { MetaMaskWallet } from "@thirdweb-dev/wallets";
+import { Web3Provider } from "../components/Web3Provider";
+
 
 // Change the network to the one you want to use: "mainnet-beta", "testnet", "devnet", "localhost" or your own RPC endpoint
 const desiredNetwork = "devnet";
@@ -50,7 +52,7 @@ function MyApp({ Component, pageProps }) {
 	return (
 		<>
 			<Meta title="NFT WORLD" />
-
+			<Web3Provider>
 			<Provider store={store}>
 			{/* <ThirdwebProvider network={desiredNetwork} wallet={wallet}> */}
 				<ThemeProvider enableSystem={true} attribute="class">
@@ -68,6 +70,7 @@ function MyApp({ Component, pageProps }) {
 				</ThemeProvider>
 			{/* </ThirdwebProvider> */}
 			</Provider>
+			</Web3Provider>
 		</>
 	);
 }
