@@ -90,6 +90,9 @@ const Explore_collection_item = ({ itemFor }) => {
                     owner: item[7],
                     tok_address: item[8],
                     likes: parseInt(BigNumber.from(item[9]).toBigInt()),
+					price: parseInt(BigNumber.from(item[10]).toBigInt()),
+					latestPrice: parseInt(BigNumber.from(item[11]).toBigInt()),
+					 
                   },
                 }}
               >
