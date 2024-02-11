@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { bidsModalShow } from "../../redux/counterSlice";
 import { useAccount } from "wagmi";
 import { ethers, BigNumber } from "ethers";
+import TokenContractABI from "../../contract_data/contract_Tok.json";
 import NFTContract from "../../contract_data/contract_NFT";
 import NFT_ABI from "../../contract_data/NFT_Abi.json";
 
@@ -39,26 +40,41 @@ const Item = () => {
   const auction_timer = 1000000000;
   const [bidPrice, setBidPrice] = useState(0);
   const [bidData, setbidData] = useState(false);
-  // const { address } = useAccount();
+  const [tokensCnt, settokensCnt] = useState(0);
+  const [utilitytokensCnt, setutilitytokensCnt] = useState(0)
+  const { address } = useAccount();
 
-  const address = "0x6731B8e14E7b235454816E4f59d2aDD8b8Bb744A";
-//   useEffect(() => {
-//     const highestBid = async () => {
-//       const RPCprovider = new ethers.providers.Web3Provider(window.ethereum);
-//       const nftContract = new ethers.Contract(
-//         NFTContract,
-//         NFT_ABI,
-//         RPCprovider.getSigner(address)
-//       );
-//       let user = await nftContract.getBidDetails(id);
-//       // setLatestPrice(nft[6]/1e18);
-//       setbidData(user == address);
-//       let nft = await nftContract.getNFT(id);
-//       setLatestPrice(nft[6] / 1e18);
-//       setbidData(nft[6] / 1e18 == bidPrice);
-//     };
-//     highestBid();
-//   }, []);
+//   const address = "0x6731B8e14E7b235454816E4f59d2aDD8b8Bb744A";
+  //   useEffect(() => {
+  //     const highestBid = async () => {
+  //       const RPCprovider = new ethers.providers.Web3Provider(window.ethereum);
+  //       const nftContract = new ethers.Contract(
+  //         NFTContract,
+  //         NFT_ABI,
+  //         RPCprovider.getSigner(address)
+  //       );
+  //       let user = await nftContract.getBidDetails(id);
+  //       // setLatestPrice(nft[6]/1e18);
+  //       setbidData(user == address);
+  //       let nft = await nftContract.getNFT(id);
+  //       setLatestPrice(nft[6] / 1e18);
+  //       setbidData(nft[6] / 1e18 == bidPrice);
+  //     };
+  //     highestBid();
+  //   }, []);
+  const buyUtlityTokens = async () => {
+	const RPCprovider = new ethers.providers.Web3Provider(window.ethereum);
+    // console.log(SENDER_ABI);
+    const nftContract = new ethers.Contract(
+      NFTContract,
+      NFT_ABI,
+      RPCprovider.getSigner(address)
+    );
+	let nft = await nftContract.getNFT(id);
+	let priceOfnft =parseInt( BigNumber.from(nft[5]).toBigInt());
+
+    let tok = await nftContract.buyTokens(utilitytokensCnt,priceOfnft /100,id , {value: (priceOfnft /100)*utilitytokensCnt});
+  }
   const transferNFT = async () => {
     const RPCprovider = new ethers.providers.Web3Provider(window.ethereum);
     // console.log(SENDER_ABI);
@@ -73,43 +89,83 @@ const Item = () => {
     const transactionParameters = {
       from: address,
       to: ownerName,
-      value: '0x' + BigNumber.from(
-        ((1 -(100 - nft[1] )/ 200) * bidPrice * 1e18).toString()
-      ).toBigInt().toString(16),
+      value:
+        "0x" +
+        BigNumber.from(
+          ((1 - (100 - nft[1]) / 200) * bidPrice * 1e18).toString()
+        )
+          .toBigInt()
+          .toString(16),
     };
     // popup - request the user to sign and broadcast the transaction
-    await ethereum.request({
-      method: "eth_sendTransaction",
-      params: [transactionParameters],
-    }).then(function (txHash) {
-		console.log('Transaction sent:', txHash);
-		// Handle transaction success
-	})
-	.catch(function (error) {
-		console.error('Transaction failed:', error);
-		// Handle transaction failure
-	});;
+    await ethereum
+      .request({
+        method: "eth_sendTransaction",
+        params: [transactionParameters],
+      })
+      .then(function (txHash) {
+        console.log("Transaction sent:", txHash);
+        // Handle transaction success
+      })
+      .catch(function (error) {
+        console.error("Transaction failed:", error);
+        // Handle transaction failure
+      });
     const transactionParameters2 = {
       from: address,
       to: NFTContract,
-      value: '0x' + BigNumber.from(
-        (((100-nft[1]) / 200) * bidPrice * 1e18).toString()
-      ).toBigInt().toString(16),
+      value:
+        "0x" +
+        BigNumber.from((((100 - nft[1]) / 200) * bidPrice * 1e18).toString())
+          .toBigInt()
+          .toString(16),
     };
     // popup - request the user to sign and broadcast the transaction
-    await ethereum.request({
-      method: "eth_sendTransaction",
-      params: [transactionParameters2],
-    }).then(function (txHash) {
-		console.log('Transaction sent:', txHash);
-		// Handle transaction success
-	})
-	.catch(function (error) {
-		console.error('Transaction failed:', error);
-		// Handle transaction failure
-	});
+    await ethereum
+      .request({
+        method: "eth_sendTransaction",
+        params: [transactionParameters2],
+      })
+      .then(function (txHash) {
+        console.log("Transaction sent:", txHash);
+        // Handle transaction success
+      })
+      .catch(function (error) {
+        console.error("Transaction failed:", error);
+        // Handle transaction failure
+      });
     let bid = await nftContract.transferNFT(id);
     await bid.wait();
+  };
+  const withdrawNFT = async () => {
+    const RPCprovider = new ethers.providers.Web3Provider(window.ethereum);
+    // console.log(SENDER_ABI);
+    const nftContract = new ethers.Contract(
+      NFTContract,
+      NFT_ABI,
+      RPCprovider.getSigner(address)
+    );
+    console.log(nftContract);
+    let nft = await nftContract.getNFT(id);
+    let nft2 = await nftContract.getNFTDetails(id);
+    // let priceOfnft = tokenaddr[3];
+    const tokContract = new ethers.Contract(
+      nft[3],
+      TokenContractABI,
+      RPCprovider.getSigner(address)
+    );
+    let balance2 = await tokContract.balanceOf(address);
+	let balance = parseInt(BigNumber.from(balance2).toBigInt());
+	let priceOfnft =parseInt( BigNumber.from(nft[5]).toBigInt());
+	tokensCnt = parseInt(tokensCnt);
+	console.log(balance, tokensCnt, priceOfnft)
+    if (balance >= tokensCnt) {
+      let tokens = await nftContract.sellTokens(tokensCnt, id,(((100-tokensCnt)/100)* priceOfnft / 100));
+      await tokens.wait();
+	  let transfer = await tokContract.transfer( nft[3], tokensCnt);
+	  await transfer.wait();
+
+    }
   };
   const placeABid = async () => {
     const RPCprovider = new ethers.providers.Web3Provider(window.ethereum);
@@ -370,11 +426,41 @@ const Item = () => {
               className="contact-form-input mb-4 dark:bg-jacarta-700 border-jacarta-100 hover:ring-accent/10 focus:ring-accent dark:border-jacarta-600 dark:placeholder:text-jacarta-300 w-full rounded-lg py-3 hover:ring-2 dark:text-white"
               id="name"
               type="text"
+              placeholder="Enter Tokens Amount"
+              onChange={(e) => setutilitytokensCnt(e.target.value)}
+            />
+
+            <button
+              className="bg-accent mb-4 shadow-accent-volume hover:bg-accent-dark inline-block w-full rounded-full py-3 px-8 text-center font-semibold text-white transition-all"
+              onClick={buyUtlityTokens}
+            >
+             Buy Utility Tokens
+            </button>
+            <input
+              name="name"
+              className="contact-form-input mb-4 dark:bg-jacarta-700 border-jacarta-100 hover:ring-accent/10 focus:ring-accent dark:border-jacarta-600 dark:placeholder:text-jacarta-300 w-full rounded-lg py-3 hover:ring-2 dark:text-white"
+              id="name"
+              type="text"
+              placeholder="Enter Tokens Amount"
+              onChange={(e) => settokensCnt(e.target.value)}
+            />
+
+            <button
+              className="bg-accent mb-4 shadow-accent-volume hover:bg-accent-dark inline-block w-full rounded-full py-3 px-8 text-center font-semibold text-white transition-all"
+              onClick={withdrawNFT}
+            >
+              Withdraw Utility Tokens
+            </button>
+            <input
+              name="name"
+              className="contact-form-input mb-4 dark:bg-jacarta-700 border-jacarta-100 hover:ring-accent/10 focus:ring-accent dark:border-jacarta-600 dark:placeholder:text-jacarta-300 w-full rounded-lg py-3 hover:ring-2 dark:text-white"
+              id="name"
+              type="text"
               placeholder="Enter Bid Amount"
               onChange={(e) => setBidPrice(e.target.value)}
             />
             <button
-              className="bg-accent mb-4 shadow-accent-volume hover:bg-accent-dark inline-block w-full rounded-full py-3 px-8 text-center font-semibold text-white transition-all"
+              className="bg-white mb-4 shadow-accent-volume hover:bg-accent-dark inline-block w-full rounded-full py-3 px-8 text-center font-semibold text-black transition-all"
               onClick={placeABid}
             >
               Place Bid

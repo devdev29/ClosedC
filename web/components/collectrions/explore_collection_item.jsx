@@ -12,8 +12,8 @@ const Explore_collection_item = ({ itemFor }) => {
 
   const [itemData, setItemData] = useState([]);
 
-  // const { address } = useAccount();
-  const address = "0x6731B8e14E7b235454816E4f59d2aDD8b8Bb744A";
+  const { address } = useAccount();
+//   const address = "0x6731B8e14E7b235454816E4f59d2aDD8b8Bb744A";
   const [tokens, settokens] = useState(0);
   const [nftID, setnftID] = useState(-1);
   const [nftTitle, setNFTTitle] = useState("");
