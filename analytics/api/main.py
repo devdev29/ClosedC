@@ -1,5 +1,6 @@
 import re
 import random
+import os
 
 import joblib
 import contractions as cont
@@ -8,6 +9,10 @@ import requests
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
+from sklearn.preprocessing import PolynomialFeatures
+
+from PriceModel import PriceBody
 
 app = FastAPI()
 origins = ['*']
@@ -19,6 +24,10 @@ app.add_middleware(
     allow_methods = ['*'],
     allow_headers = ['*']
 )
+
+load_dotenv('.env')
+
+NFT_API_KEY = os.environ.get('NFT_API_KEY')
 
 def remove_repeat(text):
     newstr=''
@@ -78,6 +87,17 @@ def get_cleaned_tweets(hashtag: str):
     tweets = clean(tweet_list)
     return tweets
 
+def get_rarity(chain_id: str, token_id: int):
+    url = f'https://api.simplehash.com/api/v0/nfts/ethereum/{chain_id}/{token_id}'
+    headers = {
+    "accept": "application/json",
+    "X-API-KEY": NFT_API_KEY
+    }
+
+    resp = requests.get(url=url, headers=headers).json()
+    rarity_score = resp['rarity']['score']
+    return rarity_score
+
 @app.get('/get_sentiment/{nft_name}')
 async def get_sentiment(nft_name: str):
     reddit_predictor = joblib.load('reddit_classifier.pickle')
@@ -93,4 +113,12 @@ async def get_sentiment(nft_name: str):
     posPer = nPos/len(cleaned_tweets)
     result = {'positive': posPer}
     return result
+
+@app.post('/get_price')
+async def get_price(price_params: PriceBody):
+    price_pred = joblib.load('price_pred.pickle')
+    trans = joblib.load('poly_features.pickle')
+    rar = get_rarity(chain_id=price_params.chain_id, token_id=price_params.token_id)
+    price = price_pred.predict(trans.transform([[rar]]))
+    return {'price':price[0]}
 
