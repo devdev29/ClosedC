@@ -52,3 +52,41 @@ export const EthereumDropdown2_data = [
 		image: '/images/chains/FUSD.png',
 	},
 ];
+
+export const GenreDropdown2_data = [
+	{
+		id: '0Literature',
+		text: 'Literature',
+		image: '/images/genres/literature.png',
+	},
+	{
+		id: '1Music',
+		text: 'Music',
+		image: '/images/chains/music.png',
+	},
+	{
+		id: '2Sports',
+		text: 'Sports',
+		image: '/images/chains/sports.png',
+	},
+	{
+		id: '3Photography',
+		text: 'Photography',
+		image: '/images/chains/photography.png',
+	},
+	{
+		id: '4Collectibles',
+		text: 'Collectibles',
+		image: '/images/chains/collectibles.png',
+	},
+	{
+		id: '5Gaming',
+		text: 'Gaming',
+		image: '/images/chains/gaming.png',
+	},
+	{
+		id: '6AR/VR',
+		text: 'AR/VR',
+		image: '/images/chains/arvr.png',
+	},
+];
