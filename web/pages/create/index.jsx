@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 import { showPropatiesModal } from "../../redux/counterSlice";
 import Meta from "../../components/Meta";
 import axios from 'axios';
-import { ethers } from "ethers";
+import { ethers,BigNumber } from "ethers";
 const FormData = require('form-data');
 import NFTMarketplaceABI from '../../contract_data/NFT_Abi.json';
 import NFTMarketplaceAddress from '../../contract_data/contract_NFT';
@@ -355,7 +355,7 @@ const Create = () => {
               </p>
               <textarea
                 id="item-description"
-                onChange={(e)=>{setPrice(parseFloat(e.target.value))}}  
+                onChange={(e)=>{setPrice(BigNumber.from(e.target.value.toString()).toBigInt())}}  
                 className="dark:bg-jacarta-700 border-jacarta-100 hover:ring-accent/10 focus:ring-accent dark:border-jacarta-600 dark:placeholder:text-jacarta-300 w-full rounded-lg py-3 px-3 hover:ring-2 dark:text-white"
                 rows="1"
                 required

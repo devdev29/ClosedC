@@ -6,6 +6,7 @@ import { useAccount } from "wagmi";
 import { ethers, BigNumber } from "ethers";
 import NFTContract from "../../contract_data/contract_NFT";
 import NFT_ABI from "../../contract_data/NFT_Abi.json";
+import Explore_collection_item_help from "./explorehelp";
 
 const Explore_collection_item = ({ itemFor }) => {
   const { sortedCollectionData } = useSelector((state) => state.counter);
@@ -18,6 +19,7 @@ const Explore_collection_item = ({ itemFor }) => {
   const [nftID, setnftID] = useState(-1);
   const [nftTitle, setNFTTitle] = useState("");
   const [nftDet, setnftDet] = useState([]);
+  const [nftDet2, setnftDet2] = useState([]);
   useEffect(() => {
     const contractCall = async () => {
       const RPCprovider = new ethers.providers.Web3Provider(window.ethereum);
@@ -30,6 +32,7 @@ const Explore_collection_item = ({ itemFor }) => {
       console.log(nftContract);
       let token2 = await nftContract.getTokens();
       let tok = parseInt(BigNumber.from(token2).toBigInt());
+      // console.log("Tokens:", tok);
       console.log("Tokens:", tok);
       for (let i = 0; i < tok; i++) {
         let nft = await nftContract.getNFTDetails(i);
@@ -41,9 +44,15 @@ const Explore_collection_item = ({ itemFor }) => {
 
         // console.log("NFT Details:",nftID);
         // let nft2 = await nftContract.getNFT(i);
-        await setnftDet([...nftDet, nft.concat(nft2)]);
+        let nftTemp  = nftDet;
+        nftTemp.push(nft.concat(nft2));
+        console.log(nftDet)
+        await setnftDet(nftTemp);
+       
         // console.log("Tokens:",nftDet);
       }
+      console.log("Tokens:", nftDet);
+      setnftDet2(nftDet)
     };
 
     contractCall();
@@ -58,11 +67,13 @@ const Explore_collection_item = ({ itemFor }) => {
     <div>
       {/* <h1>{nftID?nftID:'Loading..'}</h1> */}
       {/* <h1>{nftTitle?nftTitle:'Loading..'}</h1> */}
-
-      {nftDet.map((item, index) => {
+      
+      {/* <Explore_collection_item_help nftDet ={nftDet} /> */}
+     {nftDet2.map((item, index) => {
         return (
+
           <article key={parseInt(BigNumber.from(item[0]).toBigInt())}>
-            <div className="dark:bg-jacarta-700 dark:border-jacarta-700 border-jacarta-100 rounded-2xl border bg-white p-[1.1875rem] transition-shadow hover:shadow-lg">
+            <div className="dark:bg-jacarta-700 mb-2 col-span-2 dark:border-jacarta-700 border-jacarta-100 rounded-2xl border bg-white p-[1.1875rem] transition-shadow hover:shadow-lg">
               <Link href="/collection/avatar_1">
                 <a className="flex space-x-[0.625rem]">
                   <span className="w-[74.5%]">
@@ -105,7 +116,6 @@ const Explore_collection_item = ({ itemFor }) => {
                 <div className="flex flex-wrap items-center">
                   <Link href="/user/avatar_6">
                     <a className="mr-2 shrink-0">
-                      {/* <img src={userImage} alt="owner" className="h-5 w-5 rounded-full" /> */}
                     </a>
                   </Link>
 
@@ -124,7 +134,6 @@ const Explore_collection_item = ({ itemFor }) => {
           </article>
         );
       })}
-
       {/* { Array.from({ length: tokens }, (_, index) => (
 			
 			<article key={index}>
